@@ -289,9 +289,18 @@ body::before {
   color: var(--accent) !important;
 }
 
+.contact-list {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
 .contact-link {
   display: inline-block;
-  margin-top: 0.4rem;
   color: var(--ink);
   font-size: 1.25rem;
   text-decoration: none;

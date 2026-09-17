@@ -2,7 +2,7 @@
 
 Personal site for **Sultan Said Salim Ahmed Al Ghafry**.
 
-A small static page: about, what I am doing now, work, and a GitHub link. Dark and light themes are built in.
+A small static page for a University of Alberta student who likes drawing and programming. About, now, work, email, and GitHub. Dark and light themes are built in.
 
 ## Preview locally
 
