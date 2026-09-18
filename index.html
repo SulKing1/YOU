@@ -43,6 +43,7 @@
           <ul id="nav-menu" class="nav-list">
             <li><a href="#about">About</a></li>
             <li><a href="#now">Now</a></li>
+            <li><a href="#drawings">Drawings</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
@@ -99,6 +100,25 @@
           </div>
         </section>
 
+        <section id="drawings" class="panel drawings-panel">
+          <h2>Drawings</h2>
+          <div class="panel-body">
+            <p class="now-note">
+              Press the plus to add a drawing from your device. They stay in
+              this browser.
+            </p>
+            <p class="drawings-status" data-drawings-status hidden></p>
+            <ul class="drawing-grid" data-drawing-grid></ul>
+            <input
+              class="visually-hidden"
+              data-drawing-file
+              type="file"
+              accept="image/*"
+              multiple
+            />
+          </div>
+        </section>
+
         <section id="work" class="panel">
           <h2>Work</h2>
           <div class="panel-body">
@@ -142,6 +162,13 @@
         <p class="footer-note">Built as a simple personal site.</p>
       </footer>
     </div>
+
+    <dialog class="drawing-dialog" data-drawing-dialog>
+      <img alt="" data-drawing-preview />
+      <button type="button" class="drawing-dialog-close" data-drawing-close>
+        Close
+      </button>
+    </dialog>
 
     <script src="./script.js"></script>
   </body>
