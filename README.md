@@ -9,7 +9,7 @@ Personal site for **Sultan Said Salim Ahmed Al Ghafry**.
 GitHub Pages is set to `main` → `/` (root).
 
 - Home: **https://sulking1.github.io/YOU/**
-- Drawings (separate site): **https://sulking1.github.io/YOU/drawings/**
+- Gallery: **https://sulking1.github.io/YOU/drawings/**
 
 ## Preview locally
 
