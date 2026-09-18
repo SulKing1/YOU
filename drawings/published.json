@@ -1,3 +1,5 @@
 {
-  "drawings": []
+  "drawings": [
+    { "src": "./media/octoman_001.png", "name": "Octoman" }
+  ]
 }
