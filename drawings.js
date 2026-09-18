@@ -1,7 +1,7 @@
-
 (() => {
   const DB_NAME = "you-drawings";
   const STORE = "drawings";
+  const OWNER_KEY = "you-gallery-owner";
   const MAX_BYTES = 2.5 * 1024 * 1024;
   const grid = document.querySelector("[data-drawing-grid]");
   const fileInput = document.querySelector("[data-drawing-file]");
@@ -9,26 +9,54 @@
   const dialog = document.querySelector("[data-drawing-dialog]");
   const preview = document.querySelector("[data-drawing-preview]");
   const closeDialog = document.querySelector("[data-drawing-close]");
+  const ledeEl = document.querySelector("[data-gallery-lede]");
+  const ownerBar = document.querySelector("[data-owner-bar]");
+  const lockBtn = document.querySelector("[data-owner-lock]");
   const objectUrls = new Map();
 
   if (!grid || !fileInput) {
     return;
   }
 
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("owner") === "1") {
+    localStorage.setItem(OWNER_KEY, "1");
+    params.delete("owner");
+    const clean = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash}`;
+    window.history.replaceState({}, "", clean);
+  }
+  if (params.get("owner") === "0") {
+    localStorage.removeItem(OWNER_KEY);
+    params.delete("owner");
+    const clean = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash}`;
+    window.history.replaceState({}, "", clean);
+  }
+
   let dbPromise;
 
   init();
 
+  function isOwner() {
+    return localStorage.getItem(OWNER_KEY) === "1";
+  }
+
   function init() {
+    updateOwnerUi();
     dbPromise = openDb();
     render().catch((error) => {
-      grid.replaceChildren(buildAddTile());
+      const fallback = isOwner() ? [buildAddTile()] : [];
+      grid.replaceChildren(...fallback);
       showStatus("Could not open the drawings gallery.");
       console.error(error);
     });
 
     grid.addEventListener("click", onGridClick);
     fileInput.addEventListener("change", onFilesChosen);
+    lockBtn?.addEventListener("click", () => {
+      localStorage.removeItem(OWNER_KEY);
+      updateOwnerUi();
+      render().catch((error) => console.error(error));
+    });
     closeDialog?.addEventListener("click", () => dialog?.close());
     dialog?.addEventListener("click", (event) => {
       if (event.target === dialog) {
@@ -41,6 +69,19 @@
         preview.alt = "";
       }
     });
+  }
+
+  function updateOwnerUi() {
+    const owner = isOwner();
+    document.body.classList.toggle("is-owner", owner);
+    if (ledeEl) {
+      ledeEl.textContent = owner
+        ? "Press plus to add a drawing. Visitors cannot add."
+        : "Drawings by Sultan Al Ghafry.";
+    }
+    if (ownerBar) {
+      ownerBar.hidden = !owner;
+    }
   }
 
   function openDb() {
@@ -97,10 +138,43 @@
     );
   }
 
+  async function loadPublished() {
+    try {
+      const response = await fetch("./published.json", { cache: "no-store" });
+      if (!response.ok) {
+        return [];
+      }
+      const data = await response.json();
+      return Array.isArray(data.drawings) ? data.drawings : [];
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   async function render() {
-    const items = await listDrawings();
+    const published = await loadPublished();
+    const local = isOwner() ? await listDrawings() : [];
     revokeUrls();
-    grid.replaceChildren(buildAddTile(), ...items.map(buildDrawingTile));
+
+    const nodes = [
+      ...published.map(buildPublishedTile),
+      ...local.map(buildDrawingTile),
+    ];
+    if (isOwner()) {
+      nodes.unshift(buildAddTile());
+    }
+    if (!nodes.length) {
+      nodes.push(buildEmptyTile());
+    }
+    grid.replaceChildren(...nodes);
+  }
+
+  function buildEmptyTile() {
+    const item = document.createElement("li");
+    item.className = "drawing-item gallery-empty";
+    item.textContent = "No drawings yet.";
+    return item;
   }
 
   function buildAddTile() {
@@ -115,6 +189,21 @@
     icon.setAttribute("aria-hidden", "true");
     button.append(icon);
     item.append(button);
+    return item;
+  }
+
+  function buildPublishedTile(record) {
+    const item = document.createElement("li");
+    item.className = "drawing-item drawing-tile";
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "drawing-open";
+    open.setAttribute("aria-label", `Open ${record.name || "drawing"}`);
+    const img = document.createElement("img");
+    img.src = record.src;
+    img.alt = record.name || "Drawing";
+    open.append(img);
+    item.append(open);
     return item;
   }
 
@@ -151,11 +240,17 @@
     const removeBtn = event.target.closest("[data-remove]");
     if (removeBtn) {
       event.preventDefault();
+      if (!isOwner()) {
+        return;
+      }
       removeDrawing(removeBtn.dataset.remove);
       return;
     }
 
     if (event.target.closest(".add-drawing")) {
+      if (!isOwner()) {
+        return;
+      }
       fileInput.click();
       return;
     }
@@ -172,6 +267,9 @@
   }
 
   async function onFilesChosen(event) {
+    if (!isOwner()) {
+      return;
+    }
     const files = [...(event.target.files || [])];
     fileInput.value = "";
     if (!files.length) {

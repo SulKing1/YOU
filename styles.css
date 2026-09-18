@@ -372,6 +372,38 @@ body::before {
   font-size: 0.92rem;
 }
 
+.gallery-empty {
+  grid-column: 1 / -1;
+  padding: 1.2rem 0;
+  color: var(--muted);
+}
+
+.owner-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.owner-bar[hidden] {
+  display: none;
+}
+
+.owner-lock {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink);
+  border-radius: 999px;
+  min-height: 2.2rem;
+  padding: 0 0.9rem;
+  font: inherit;
+  cursor: pointer;
+}
+
 .drawing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
