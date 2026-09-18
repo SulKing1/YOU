@@ -76,7 +76,7 @@
     document.body.classList.toggle("is-owner", owner);
     if (ledeEl) {
       ledeEl.textContent = owner
-        ? "Press plus to add a drawing. Visitors cannot add."
+        ? "Press plus to add. Those sketches stay on this device until you publish them for everyone."
         : "Drawings by Sultan Al Ghafry.";
     }
     if (ownerBar) {
@@ -154,7 +154,7 @@
 
   async function render() {
     const published = await loadPublished();
-    const local = isOwner() ? await listDrawings() : [];
+    const local = await listDrawings();
     revokeUrls();
 
     const nodes = [
@@ -225,18 +225,47 @@
     img.alt = record.name;
     open.append(img);
 
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "drawing-remove";
-    remove.setAttribute("aria-label", `Remove ${record.name}`);
-    remove.dataset.remove = record.id;
-    remove.textContent = "×";
+    const badge = document.createElement("span");
+    badge.className = "drawing-badge";
+    badge.textContent = "Only on this device";
 
-    item.append(open, remove);
+    item.append(open, badge);
+
+    if (isOwner()) {
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "drawing-remove";
+      remove.setAttribute("aria-label", `Remove ${record.name}`);
+      remove.dataset.remove = record.id;
+      remove.textContent = "×";
+      item.append(remove);
+    }
+
+    const download = document.createElement("button");
+    download.type = "button";
+    download.className = "drawing-download";
+    download.setAttribute("aria-label", `Download ${record.name}`);
+    download.dataset.download = record.name || "drawing.png";
+    download.textContent = "Save";
+    item.append(download);
+
     return item;
   }
 
   function onGridClick(event) {
+    const downloadBtn = event.target.closest("[data-download]");
+    if (downloadBtn) {
+      event.preventDefault();
+      const tile = downloadBtn.closest(".drawing-tile");
+      const img = tile?.querySelector("img");
+      if (img) {
+        const link = document.createElement("a");
+        link.href = img.src;
+        link.download = downloadBtn.dataset.download || "drawing.png";
+        link.click();
+      }
+      return;
+    }
     const removeBtn = event.target.closest("[data-remove]");
     if (removeBtn) {
       event.preventDefault();
