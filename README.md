@@ -43,7 +43,25 @@ https://sulking1.github.io/YOU/drawings/?owner=1
 
 Then bookmark the gallery without `?owner=1`. Click **Lock** when you want to hide the plus button again.
 
-Drawings added with plus stay in that browser. To show a drawing to everyone, put the image in `drawings/media/` and add it to `drawings/published.json`.
+Drawings added with plus stay in that browser, even after you click **Lock**. Lock only hides the plus button.
+
+To show a drawing to everyone:
+
+1. Click **Save** on the drawing, or copy your image file.
+2. Put the file in `drawings/media/`, for example `drawings/media/sketch.jpg`.
+3. Open `drawings/published.json` and list it:
+
+```json
+{
+  "drawings": [
+    { "src": "./media/sketch.jpg", "name": "Sketch" }
+  ]
+}
+```
+
+4. Commit and push to `main`. After GitHub Pages updates, everyone can see it.
+
+You can also send the image here and I will add it to the gallery.
 
 ## Vite app (optional)
 
