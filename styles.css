@@ -320,6 +320,11 @@ body::before {
   padding-bottom: 1.6rem;
 }
 
+.drawings-site main {
+  min-height: 62vh;
+  padding-bottom: 3rem;
+}
+
 .drawings-hero h1 {
   font-size: clamp(3rem, 8vw, 6rem);
 }
