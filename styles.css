@@ -211,6 +211,27 @@ body::before {
   letter-spacing: 0.04em;
 }
 
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.6rem;
+  padding: 0.72rem 1.25rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero-cta:hover,
+.hero-cta:focus-visible {
+  filter: brightness(1.08);
+}
+
+.panel .hero-cta {
+  margin-top: 0.4rem;
+}
+
 .hero,
 .panel {
   scroll-margin-top: 5.5rem;

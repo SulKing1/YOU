@@ -13,7 +13,7 @@ The Drawings tab has a plus button. Choose an image from your device and it stay
 GitHub Pages is set to `main` → `/` (root).
 
 - Home: **https://sulking1.github.io/YOU/**
-- Drawings (separate site): **https://sulking1.github.io/YOU/drawings/**
+- Gallery: **https://sulking1.github.io/YOU/drawings/**
 
 ## Preview locally
 
