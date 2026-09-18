@@ -2,6 +2,10 @@
 
 Personal site for **Sultan Said Salim Ahmed Al Ghafry**.
 
+A small static page for a University of Alberta student who likes drawing and programming. About, now, drawings, work, email, and GitHub. Dark and light themes are built in.
+
+The Drawings tab has a plus button. Choose an image from your device and it stays in that browser (it is not uploaded to GitHub).
+
 ## Live site
 
 **https://sulking1.github.io/YOU/**
