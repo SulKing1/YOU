@@ -1,26 +1,37 @@
 # YOU
 
-Personal site for **Sultan Said Salim Ahmed Al Ghafry**.
+A fast, accessible personal portfolio built with **Vite + React + TypeScript**.
 
-A small static page for a University of Alberta student who likes drawing and programming. About, now, work, email, and GitHub. Dark and light themes are built in.
-
-## Preview locally
-
-Any static file server works. From this folder:
+## Getting started
 
 ```bash
-python3 -m http.server 4173
+npm ci        # install exact dependencies from the lockfile
+npm run dev   # start the dev server at http://localhost:5173
 ```
 
-Then open [http://localhost:4173](http://localhost:4173).
+## Scripts
 
-## Publish with GitHub Pages
+| Script          | Description                                  |
+| --------------- | -------------------------------------------- |
+| `npm run dev`   | Start the Vite dev server with HMR           |
+| `npm run build` | Type-check (`tsc -b`) and build for prod     |
+| `npm run lint`  | Lint the codebase with oxlint                |
+| `npm run test`  | Run the unit tests with Vitest               |
+| `npm run preview` | Preview the production build locally       |
 
-1. In the repository settings, open **Pages**.
-2. Set the source to **Deploy from a branch**.
-3. Choose `main` and the `/` (root) folder.
-4. Save. GitHub will host `index.html` at your Pages URL.
+## Project structure
 
-## Customize
+```
+src/
+  App.tsx        # Portfolio page (hero, skills, projects)
+  data.ts        # Profile content (name, skills, projects)
+  utils.ts       # Small helpers (e.g. initials)
+  utils.test.ts  # Unit tests for utils
+  App.css        # Component styles
+  index.css      # Global styles / theme
+```
 
-Edit `index.html` to change copy, sections, or links. Colors live in `styles.css` under `:root` and `[data-theme="light"]`.
+## Cloud Agent environment
+
+This repo includes `.cursor/environment.json` so Cursor Cloud Agents can install
+dependencies (`npm ci`) and run the dev server automatically.
