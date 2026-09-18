@@ -76,7 +76,7 @@
     document.body.classList.toggle("is-owner", owner);
     if (ledeEl) {
       ledeEl.textContent = owner
-        ? "Press plus to add. Those sketches stay on this device until you publish them for everyone."
+        ? "Press plus for this device only. Upload a PNG or JPG to drawings/media/ on GitHub to show everyone."
         : "Drawings by Sultan Al Ghafry.";
     }
     if (ownerBar) {
@@ -139,6 +139,16 @@
   }
 
   async function loadPublished() {
+    const listed = await loadPublishedJson();
+    const uploaded = await loadUploadedMedia();
+    const seen = new Set(listed.map((item) => item.src));
+    return [
+      ...listed,
+      ...uploaded.filter((item) => !seen.has(item.src)),
+    ];
+  }
+
+  async function loadPublishedJson() {
     try {
       const response = await fetch("./published.json", { cache: "no-store" });
       if (!response.ok) {
@@ -150,6 +160,60 @@
       console.error(error);
       return [];
     }
+  }
+
+  async function loadUploadedMedia() {
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${galleryRepo()}/contents/drawings/media`,
+        { headers: { Accept: "application/vnd.github+json" } }
+      );
+      if (!response.ok) {
+        return [];
+      }
+      const items = await response.json();
+      if (!Array.isArray(items)) {
+        return [];
+      }
+      return items
+        .filter(
+          (item) =>
+            item &&
+            item.type === "file" &&
+            /\.(png|jpe?g|gif|webp)$/i.test(item.name || "")
+        )
+        .map((item) => ({
+          src: `./media/${item.name}`,
+          name: prettyDrawingName(item.name),
+        }));
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  function galleryRepo() {
+    const host = window.location.hostname;
+    if (host.endsWith(".github.io")) {
+      const owner = host.slice(0, -".github.io".length);
+      const repo = window.location.pathname.split("/").filter(Boolean)[0];
+      if (owner && repo) {
+        return `${owner}/${repo}`;
+      }
+    }
+    return "SulKing1/YOU";
+  }
+
+  function prettyDrawingName(filename) {
+    const base = String(filename || "")
+      .replace(/\.[^.]+$/, "")
+      .replace(/_\d+$/, "")
+      .replace(/[-_]+/g, " ")
+      .trim();
+    if (!base) {
+      return filename;
+    }
+    return base.replace(/\b[a-z]/g, (ch) => ch.toUpperCase());
   }
 
   async function render() {
