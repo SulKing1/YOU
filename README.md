@@ -10,7 +10,10 @@ The Drawings tab has a plus button. Choose an image from your device and it stay
 
 **https://sulking1.github.io/YOU/**
 
-GitHub Pages is set to `main` → `/` (root). After this is merged into `main`, wait about a minute, then refresh that URL. You should see the personal site, not a blank page.
+GitHub Pages is set to `main` → `/` (root).
+
+- Home: **https://sulking1.github.io/YOU/**
+- Drawings (separate site): **https://sulking1.github.io/YOU/drawings/**
 
 ## Preview locally
 
@@ -20,18 +23,17 @@ From this folder:
 python3 -m http.server 4173
 ```
 
-Then open [http://localhost:4173](http://localhost:4173).
+Then open [http://localhost:4173](http://localhost:4173) and [http://localhost:4173/drawings/](http://localhost:4173/drawings/).
 
 ## What GitHub Pages serves
 
 The public site is the static files at the repo root:
 
-- `index.html`
-- `styles.css`
-- `script.js`
-- `favicon.svg`
+- `index.html` — personal site
+- `drawings/index.html` — drawings gallery
+- `styles.css`, `script.js`, `drawings.js`, `favicon.svg`
 
-Those paths are relative (`./styles.css`), so they work at `https://sulking1.github.io/YOU/`. `.nojekyll` tells GitHub not to run Jekyll on the files.
+Those paths are relative, so they work at `https://sulking1.github.io/YOU/`. `.nojekyll` tells GitHub not to run Jekyll on the files.
 
 The Drawings plus button saves images in your browser only. They are not uploaded to GitHub.
 
