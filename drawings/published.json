@@ -1,6 +1,5 @@
 {
   "drawings": [
-    { "src": "./media/octoman_001.png", "name": "Octoman", "group": "pencil" },
     { "src": "./media/Bortuo.jpg", "name": "Bortuo", "group": "pencil" },
     { "src": "./media/BorutoHimawariUzumaki.jpg", "name": "Boruto Himawari Uzumaki", "group": "pencil" },
     { "src": "./media/Boy.jpg", "name": "Boy", "group": "pencil" },
@@ -15,6 +14,7 @@
     { "src": "./media/RandomSketches.jpg", "name": "Random Sketches", "group": "pencil" },
     { "src": "./media/RE9Emily.jpg", "name": "RE9 Emily", "group": "pencil" },
     { "src": "./media/SchoolGirl.jpg", "name": "School Girl", "group": "pencil" },
+    { "src": "./media/octoman_001.png", "name": "Octoman", "group": "ipad" },
     { "src": "./media/BrawlStarsBonnie.PNG", "name": "Brawl Stars Bonnie", "group": "ipad" },
     { "src": "./media/BrawlStarsGus.jpg", "name": "Brawl Stars Gus", "group": "ipad" },
     { "src": "./media/FightMe.PNG", "name": "Fight Me", "group": "ipad" },
