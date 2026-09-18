@@ -380,7 +380,7 @@ body::before {
 
 .owner-bar {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin: 0 0 1rem;
