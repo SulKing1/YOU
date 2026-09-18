@@ -6,7 +6,7 @@
     <title>Drawings — Sultan Al Ghafry</title>
     <meta
       name="description"
-      content="Drawings by Sultan Al Ghafry. Press plus to add a sketch."
+      content="Gallery of drawings by Sultan Al Ghafry."
     />
     <meta property="og:title" content="Drawings — Sultan Al Ghafry" />
     <meta
@@ -62,11 +62,17 @@
         <section class="hero drawings-hero">
           <p class="eyebrow">Gallery</p>
           <h1>Drawings</h1>
-          <p class="lede">
-            Press the plus to add a drawing from your device. They stay in this
-            browser.
+          <p class="lede" data-gallery-lede>
+            Drawings by Sultan Al Ghafry.
           </p>
         </section>
+
+        <p class="owner-bar" data-owner-bar hidden>
+          Adding is on for this device.
+          <button type="button" class="owner-lock" data-owner-lock>
+            Lock
+          </button>
+        </p>
 
         <p class="drawings-status" data-drawings-status hidden></p>
         <ul class="drawing-grid" data-drawing-grid></ul>

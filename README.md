@@ -35,7 +35,15 @@ The public site is the static files at the repo root:
 
 Those paths are relative, so they work at `https://sulking1.github.io/YOU/`. `.nojekyll` tells GitHub not to run Jekyll on the files.
 
-The Drawings plus button saves images in your browser only. They are not uploaded to GitHub.
+The public gallery does not let visitors add drawings. The plus button appears only on a device that has been unlocked as the owner.
+
+To turn adding on for your browser, open:
+
+https://sulking1.github.io/YOU/drawings/?owner=1
+
+Then bookmark the gallery without `?owner=1`. Click **Lock** when you want to hide the plus button again.
+
+Drawings added with plus stay in that browser. To show a drawing to everyone, put the image in `drawings/media/` and add it to `drawings/published.json`.
 
 ## Vite app (optional)
 
