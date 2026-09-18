@@ -76,7 +76,7 @@
     document.body.classList.toggle("is-owner", owner);
     if (ledeEl) {
       ledeEl.textContent = owner
-        ? "Adding is on for this device. Press plus to add a drawing. Visitors cannot add."
+        ? "Press plus to add a drawing. Visitors cannot add."
         : "Drawings by Sultan Al Ghafry.";
     }
     if (ownerBar) {
