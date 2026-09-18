@@ -3,7 +3,7 @@
   const STORE = "drawings";
   const OWNER_KEY = "you-gallery-owner";
   const MAX_BYTES = 2.5 * 1024 * 1024;
-  const grid = document.querySelector("[data-drawing-grid]");
+  const gallery = document.querySelector("[data-gallery]");
   const fileInput = document.querySelector("[data-drawing-file]");
   const statusEl = document.querySelector("[data-drawings-status]");
   const dialog = document.querySelector("[data-drawing-dialog]");
@@ -14,7 +14,7 @@
   const lockBtn = document.querySelector("[data-owner-lock]");
   const objectUrls = new Map();
 
-  if (!grid || !fileInput) {
+  if (!gallery || !fileInput) {
     return;
   }
 
@@ -44,13 +44,12 @@
     updateOwnerUi();
     dbPromise = openDb();
     render().catch((error) => {
-      const fallback = isOwner() ? [buildAddTile()] : [];
-      grid.replaceChildren(...fallback);
+      gallery.replaceChildren();
       showStatus("Could not open the drawings gallery.");
       console.error(error);
     });
 
-    grid.addEventListener("click", onGridClick);
+    gallery.addEventListener("click", onGridClick);
     fileInput.addEventListener("change", onFilesChosen);
     lockBtn?.addEventListener("click", () => {
       localStorage.removeItem(OWNER_KEY);
@@ -76,8 +75,8 @@
     document.body.classList.toggle("is-owner", owner);
     if (ledeEl) {
       ledeEl.textContent = owner
-        ? "Press plus for this device only. Upload a PNG or JPG to drawings/media/ on GitHub to show everyone."
-        : "Drawings by Sultan Al Ghafry.";
+        ? "Press plus for this device only. In published.json, set group to pencil or ipad."
+        : "Pencil and iPad drawings by Sultan Al Ghafry.";
     }
     if (ownerBar) {
       ownerBar.hidden = !owner;
@@ -205,11 +204,14 @@
   }
 
   function prettyDrawingName(filename) {
-    const base = String(filename || "")
-      .replace(/\.[^.]+$/, "")
-      .replace(/_\d+$/, "")
-      .replace(/[-_]+/g, " ")
-      .trim();
+    let base = String(filename || "").replace(/\.[^.]+$/, "");
+    base = base.replace(/_\d+$/, "");
+    base = base.replace(/([a-z])([A-Z])/g, "$1 $2");
+    base = base.replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
+    base = base.replace(/([0-9])([A-Z])/g, "$1 $2");
+    base = base.replace(/\.+/g, ". ");
+    base = base.replace(/[-_]+/g, " ");
+    base = base.replace(/\s+/g, " ").trim();
     if (!base) {
       return filename;
     }
@@ -221,24 +223,54 @@
     const local = await listDrawings();
     revokeUrls();
 
-    const nodes = [
-      ...published.map(buildPublishedTile),
-      ...local.map(buildDrawingTile),
-    ];
+    const boards = [];
+    const pencil = published.filter((item) => drawingGroup(item) === "pencil");
+    const ipad = published.filter((item) => drawingGroup(item) === "ipad");
+    if (pencil.length) {
+      boards.push(buildGroup("Pencil", pencil.map(buildPublishedTile)));
+    }
+    if (ipad.length) {
+      boards.push(buildGroup("iPad", ipad.map(buildPublishedTile)));
+    }
+
+    const localNodes = local.map(buildDrawingTile);
     if (isOwner()) {
-      nodes.unshift(buildAddTile());
+      localNodes.unshift(buildAddTile());
     }
-    if (!nodes.length) {
-      nodes.push(buildEmptyTile());
+    if (localNodes.length) {
+      boards.push(buildGroup("On this device", localNodes));
     }
-    grid.replaceChildren(...nodes);
+
+    if (!boards.length) {
+      const empty = document.createElement("p");
+      empty.className = "gallery-empty";
+      empty.textContent = "No drawings yet.";
+      gallery.replaceChildren(empty);
+      return;
+    }
+    gallery.replaceChildren(...boards);
   }
 
-  function buildEmptyTile() {
-    const item = document.createElement("li");
-    item.className = "drawing-item gallery-empty";
-    item.textContent = "No drawings yet.";
-    return item;
+  function drawingGroup(record) {
+    const group = String(record.group || "").toLowerCase();
+    if (group === "pencil" || group === "ipad") {
+      return group;
+    }
+    return "pencil";
+  }
+
+  function buildGroup(title, items) {
+    const section = document.createElement("section");
+    section.className = "gallery-group";
+    section.dataset.group = title.toLowerCase();
+    const heading = document.createElement("h2");
+    heading.className = "gallery-group-title";
+    heading.textContent = title;
+    const list = document.createElement("ul");
+    list.className = "drawing-grid";
+    list.append(...items);
+    section.append(heading, list);
+    return section;
   }
 
   function buildAddTile() {
