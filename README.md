@@ -45,16 +45,23 @@ Then bookmark the gallery without `?owner=1`. Click **Lock** when you want to hi
 
 Drawings added with plus stay in that browser, even after you click **Lock**. Lock only hides the plus button.
 
-To show a drawing to everyone, put the image in `drawings/media/` (GitHub → Add file → Upload) and wait for Pages to update. The gallery lists PNG, JPG, GIF, and WebP files from that folder automatically.
-
-Optional: list a custom title in `drawings/published.json`:
+Public drawings are listed in `drawings/published.json`. Put the image file in `drawings/media/`, then add a line in that JSON file:
 
 ```json
 {
   "drawings": [
-    { "src": "./media/octoman_001.png", "name": "Octoman" }
+    { "src": "./media/octoman_001.png", "name": "Octoman" },
+    { "src": "./media/Naruto.PNG", "name": "Naruto" }
   ]
 }
+```
+
+`src` is the path from the gallery folder: `./media/` plus the exact filename (including `.PNG` vs `.jpg`). `name` is the title shown on the site.
+
+To rebuild the list from every image currently in `drawings/media/`:
+
+```bash
+node scripts/write-published-json.mjs
 ```
 
 You can also send the image here and I will add it to the gallery.

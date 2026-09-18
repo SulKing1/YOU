@@ -76,7 +76,7 @@
     document.body.classList.toggle("is-owner", owner);
     if (ledeEl) {
       ledeEl.textContent = owner
-        ? "Press plus for this device only. Upload a PNG or JPG to drawings/media/ on GitHub to show everyone."
+        ? "Press plus for this device only. Public drawings come from drawings/published.json. Add a line there for each file in drawings/media/."
         : "Drawings by Sultan Al Ghafry.";
     }
     if (ownerBar) {
@@ -205,11 +205,14 @@
   }
 
   function prettyDrawingName(filename) {
-    const base = String(filename || "")
-      .replace(/\.[^.]+$/, "")
-      .replace(/_\d+$/, "")
-      .replace(/[-_]+/g, " ")
-      .trim();
+    let base = String(filename || "").replace(/\.[^.]+$/, "");
+    base = base.replace(/_\d+$/, "");
+    base = base.replace(/([a-z])([A-Z])/g, "$1 $2");
+    base = base.replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
+    base = base.replace(/([0-9])([A-Z])/g, "$1 $2");
+    base = base.replace(/\.+/g, ". ");
+    base = base.replace(/[-_]+/g, " ");
+    base = base.replace(/\s+/g, " ").trim();
     if (!base) {
       return filename;
     }
