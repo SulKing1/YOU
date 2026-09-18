@@ -49,6 +49,7 @@ for (const item of previous) {
   drawings.push({
     src: `./media/${filename}`,
     name: item.name || prettyDrawingName(filename),
+    group: item.group === "ipad" ? "ipad" : "pencil",
   });
   seen.add(filename);
 }
@@ -60,13 +61,14 @@ for (const filename of media) {
   drawings.push({
     src: `./media/${filename}`,
     name: prettyDrawingName(filename),
+    group: "pencil",
   });
 }
 
-const lines = drawings.map(
-  (item) =>
-    `    { "src": ${JSON.stringify(item.src)}, "name": ${JSON.stringify(item.name)} }`
-);
+const lines = drawings.map((item) => {
+  const group = item.group === "ipad" ? "ipad" : "pencil";
+  return `    { "src": ${JSON.stringify(item.src)}, "name": ${JSON.stringify(item.name)}, "group": ${JSON.stringify(group)} }`;
+});
 fs.writeFileSync(
   publishedPath,
   `{\n  "drawings": [\n${lines.join(",\n")}\n  ]\n}\n`

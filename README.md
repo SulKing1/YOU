@@ -50,13 +50,13 @@ Public drawings are listed in `drawings/published.json`. Put the image file in `
 ```json
 {
   "drawings": [
-    { "src": "./media/octoman_001.png", "name": "Octoman" },
-    { "src": "./media/Naruto.PNG", "name": "Naruto" }
+    { "src": "./media/Boy.jpg", "name": "Boy", "group": "pencil" },
+    { "src": "./media/Naruto.PNG", "name": "Naruto", "group": "ipad" }
   ]
 }
 ```
 
-`src` is the path from the gallery folder: `./media/` plus the exact filename (including `.PNG` vs `.jpg`). `name` is the title shown on the site.
+`src` is the path from the gallery folder: `./media/` plus the exact filename. `name` is the title. `group` is `pencil` or `ipad`.
 
 To rebuild the list from every image currently in `drawings/media/`:
 
