@@ -298,6 +298,36 @@ body::before {
   color: var(--accent) !important;
 }
 
+.card-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+
+.card-link:hover,
+.card-link:focus-visible {
+  color: var(--accent);
+}
+
+.drawings-hero {
+  padding-bottom: 1.6rem;
+}
+
+.drawings-hero h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+.site-footer a {
+  color: inherit;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
